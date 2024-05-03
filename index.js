@@ -58,7 +58,6 @@ function handleInput(pool, choice) {
     }
 }
 
-
 // Function to view all departments
 function viewDepartments(pool) {
     pool.query('SELECT * FROM departments', (error, results) => {
@@ -121,7 +120,13 @@ async function addRole(pool) {
     // Prompt for title
     const title = await new Promise((resolve) => {
         rl.question('Enter the title of the role: ', (answer) => {
-            resolve(answer);
+            if (answer.trim() === '') {
+                console.log('Invalid input. Title cannot be empty.');
+                rl.close();
+                displayMenu();
+            } else {
+                resolve(answer);
+            }
         });
     });
 
@@ -150,11 +155,7 @@ async function addRole(pool) {
 
 
 // Function to add an employee
-function addEmployee(pool) {
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
+function addEmployee(pool, rl) {
     rl.question('Enter the first name of the employee: ', (firstName) => {
         rl.question('Enter the last name of the employee: ', (lastName) => {
             rl.question('Enter the role ID for the employee: ', (roleId) => {
@@ -162,14 +163,15 @@ function addEmployee(pool) {
                     pool.query('INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)', [firstName, lastName, roleId, managerId || null], (error, results) => {
                         if (error) throw error;
                         console.log('Employee added successfully.');
-                        rl.close();
                         displayMenu();
+                        rl.prompt();
                     });
                 });
             });
         });
     });
 }
+
 
 // Function to update an employee role
 function updateEmployeeRole(pool) {
@@ -196,14 +198,25 @@ function startApp() {
         input: process.stdin,
         output: process.stdout
     });
+
     rl.on('close', () => {
         console.log('Exiting application.');
         process.exit(0);
     });
+
     console.log('Welcome to the Employee Management System.');
     displayMenu();
+
+    // Handling user input
     rl.on('line', (input) => {
-        handleInput(pool, input);
+        rl.prompt();
+
+        // If the user is adding an employee, call the addEmployee function with the readline interface
+        if (input === '6') {
+            addEmployee(pool, rl);
+        } else {
+            handleInput(pool, input.trim());
+        }
     });
 }
 

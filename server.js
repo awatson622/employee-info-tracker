@@ -8,7 +8,7 @@ app.use(express.json());
 
 // Define routes
 app.get('/', (req, res) => {
-  res.send('Hello, world!');
+  res.send('Employee info tracker');
 });
 
 // Start the server

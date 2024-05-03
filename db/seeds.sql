@@ -15,7 +15,7 @@ INSERT INTO role (title, salary, department_id) VALUES
 
 -- Populate the employee table
 INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES
-('John', 'Doe', 1, NULL),
+('John', 'Doe', 1, 4),
 ('Jane', 'Smith', 2, 1),
 ('Alex', 'Johnson', 3, 1),
 ('Emily', 'Davis', 4, 3);
