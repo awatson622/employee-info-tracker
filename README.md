@@ -43,5 +43,9 @@ Install dependencies: npm install
 Start the application: node index.js
 Follow the on-screen prompts to navigate through the menu and perform actions.
 
+## Link to video
+
+https://drive.google.com/file/d/1SoLML9DAhlrXGEIRF6vqJul4tBUp3LS8/view
+
 ## License
 This project is licensed under the MIT License.
